@@ -153,9 +153,7 @@
                   Place on Map
                 </template>
                 <template>
-                  <paper-contact-address latitude="[[restaurante.address.location.lat]]" longitude="[[restaurante.address.location.lng]]">
-                    Open
-                  </paper-contact-address>
+                  <paper-contact-address latitude="[[item.address.location.lat]]" longitude="[[item.address.location.lng]]">Open</paper-contact-address>
                 </template>
               </vaadin-grid-column>
 
@@ -185,7 +183,7 @@
                   <vaadin-grid-sorter path="rating" direction="asc">Rating</vaadin-grid-sorter>
                 </template>
                 <template>
-                  <star-rating rate="[[restaurante.rating]]"></star-rating>
+                  <star-rating rate="[[item.rating]]"></star-rating>
                 </template>
               </vaadin-grid-column>
 
@@ -194,7 +192,7 @@
                   Facebook
                 </template>
                 <template>
-                  <facebook-button href="[[restaurante.contact.site]]" layout="standard" width="250" height="30"></facebook-button>
+                  <facebook-button href="[[item.contact.site]]" layout="standard" width="250" height="30"></facebook-button>
                 </template>
               </vaadin-grid-column>
             </vaadin-grid>

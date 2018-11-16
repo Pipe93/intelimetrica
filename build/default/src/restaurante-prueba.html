@@ -1,3 +1,233 @@
-<html><head><link rel="import" href="../elements/elements.html"></head><body><dom-module id="restaurante-prueba"><template is="dom-binds"><style>:host{display:flex;align-items:center;justify-content:center;}paper-spinner{--paper-spinner-stroke-width:10px;padding-top:5%;}paper-list{margin-left:10px;}.carga{padding-left:5%;padding-top:2%;}.principal{max-width:1920px;min-width:340px;min-height:200px;max-height:1080px;overflow:auto;background-color:#f2f3f4;text-align:center;}.contacto{width:100%;padding-left:2%;padding-right:2%;left:5%;right:5%;}paper-button.indigo{background-color:var(--paper-indigo-300);color:white;margin-left:17%;margin-right:50px;--paper-button-raised-keyboard-focus:{background-color:var(--paper-indigo-a200) !important;color:white !important;};}paper-contact-linkedin,
-      paper-contact-address{color:var(--paper-indigo-300);--paper-button-raised-keyboard-focus:{color:var(--paper-indigo-a200) !important;};}paper-button.indigo:hover{background-color:var(--paper-indigo-400);}paper-contact-linkedin:hover,
-      paper-contact-address:hover{color:var(--paper-indigo-400);}.div{text-align:center;padding:15px;}.star-rating{padding-left:12%;}.card-content{min-width:1800px;overflow:auto;}.space{height:10px;}</style><iron-ajax id="solicitarData" url="https://s3-us-west-2.amazonaws.com/lgoveabucket/data_melp.json" handle-as="json" last-response="{{data}}" loading="{{cargando}}"></iron-ajax><paper-card class="principal" heading="Melp"><template is="dom-if" if="[[cargando]]"><paper-spinner class="green" alt="Estamos cargando datos..." active="[[cargando]]"></paper-spinner><div class="carga" hidden$="[[!cargando]]"><h2>Estamos cargando datos...</h2></div></template><template is="dom-if" if="[[btn]]"><paper-button hidden$="[[cargando]]" raised="" class="indigo" on-tap="buscar">Obtener datos...</paper-button></template><template is="dom-if" if="[[!btn]]"><template is="dom-if" if="[[!cargando]]"><div class="card-content"><vaadin-grid theme="row-stripes" aria-label="Restaurantes" items="[[data]]"><vaadin-grid-column min-width="110px" flex-grow="2"><template class="header"><vaadin-grid-sorter path="name">Restaurant</vaadin-grid-sorter></template><template>[[item.name]]</template></vaadin-grid-column><vaadin-grid-column flex-grow="1"><template class="header"><vaadin-grid-sorter path="contact.site" direction="asc">Site</vaadin-grid-sorter></template><template><paper-contact-linkedin>[[item.contact.site]]</paper-contact-linkedin></template></vaadin-grid-column><vaadin-grid-column flex-grow="3"><template class="header"><vaadin-grid-sorter path="contact.email" direction="asc">Email</vaadin-grid-sorter></template><template>[[item.contact.email]]</template></vaadin-grid-column><vaadin-grid-column width="140px" flex-grow="0"><template class="header"><vaadin-grid-sorter path="contact.phone" direction="asc">Phone</vaadin-grid-sorter></template><template>[[item.contact.phone]]</template></vaadin-grid-column><vaadin-grid-column width="110px" flex-grow="0"><template class="header">Place on Map</template><template><paper-contact-address latitude="[[restaurante.address.location.lat]]" longitude="[[restaurante.address.location.lng]]">Open</paper-contact-address></template></vaadin-grid-column><vaadin-grid-column flex-grow="2"><template class="header"><vaadin-grid-sorter path="address.street" direction="asc">Street</vaadin-grid-sorter></template><template>[[item.address.street]]</template></vaadin-grid-column><vaadin-grid-column flex-grow="1"><template class="header"><vaadin-grid-sorter path="address.city" direction="asc">City</vaadin-grid-sorter></template><template>[[item.address.city]]</template></vaadin-grid-column><vaadin-grid-column flex-grow="1"><template class="header"><vaadin-grid-sorter path="address.state" direction="asc">State</vaadin-grid-sorter></template><template>[[item.address.state]]</template></vaadin-grid-column><vaadin-grid-column flex-grow="0"><template class="header"><vaadin-grid-sorter path="rating" direction="asc">Rating</vaadin-grid-sorter></template><template><star-rating rate="[[restaurante.rating]]"></star-rating></template></vaadin-grid-column><vaadin-grid-column flex-grow="0"><template class="header">Facebook</template><template><facebook-button href="[[restaurante.contact.site]]" layout="standard" width="250" height="30"></facebook-button></template></vaadin-grid-column></vaadin-grid></div></template></template></paper-card><div></div></template><script>class RestaurantePrueba extends Polymer.Element{static get is(){return"restaurante-prueba"}static get properties(){return{cargando:{type:Boolean,value:!1},data:Object}}ready(){super.ready();this.set("btn",!0)}buscar(){this.$.solicitarData.generateRequest();this.set("btn",!1)}}window.customElements.define(RestaurantePrueba.is,RestaurantePrueba);</script></dom-module></body></html>
+<link rel="import" href="../elements/elements.html">
+
+<dom-module id="restaurante-prueba">
+  <template is="dom-binds">
+    <style>
+      :host {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      paper-spinner {
+        --paper-spinner-stroke-width: 10px;
+
+        padding-top: 5%;
+      }
+
+      paper-list {
+        margin-left: 10px;
+      }
+
+      .carga {
+        padding-left: 5%;
+        padding-top: 2%;
+      }
+
+      .principal {
+        max-width: 1920px;
+        min-width: 340px;
+        min-height: 200px;
+        max-height: 1080px;
+        overflow: auto;
+        background-color: #f2f3f4;
+        text-align: center;
+      }
+
+      .contacto {
+        width: 100%;
+        padding-left: 2%;
+        padding-right: 2%;
+        left: 5%;
+        right: 5%;
+      }
+
+      paper-button.indigo {
+        background-color: var(--paper-indigo-300);
+        color: white;
+        margin-left: 17%;
+        margin-right: 50px;
+
+        --paper-button-raised-keyboard-focus: {
+          background-color: var(--paper-indigo-a200) !important;
+          color: white !important;
+        }
+      }
+
+      paper-contact-linkedin,
+      paper-contact-address {
+        color: var(--paper-indigo-300);
+
+        --paper-button-raised-keyboard-focus: {
+          color: var(--paper-indigo-a200) !important;
+        }
+      }
+
+      paper-button.indigo:hover {
+        background-color: var(--paper-indigo-400);
+      }
+
+      paper-contact-linkedin:hover,
+      paper-contact-address:hover {
+        color: var(--paper-indigo-400);
+      }
+
+      .div {
+        text-align: center;
+        padding: 15px;
+      }
+
+      .star-rating {
+        padding-left: 12%;
+      }
+
+      .card-content {
+        min-width: 1800px;
+        overflow: auto;
+      }
+
+      .space {
+        height: 10px;
+      }
+    </style>
+
+    <iron-ajax id="solicitarData" url="https://s3-us-west-2.amazonaws.com/lgoveabucket/data_melp.json" handle-as="json" last-response="{{data}}" loading="{{cargando}}"></iron-ajax>
+
+    <paper-card class="principal" heading="Melp">
+
+      <template is="dom-if" if="[[cargando]]">
+        <paper-spinner class="green" alt="Estamos cargando datos..." active="[[cargando]]"></paper-spinner>
+
+        <div class="carga" hidden$="[[!cargando]]">
+          <h2>Estamos cargando datos...</h2>
+        </div>
+      </template>
+
+      <template is="dom-if" if="[[btn]]">
+        <paper-button hidden$="[[cargando]]" raised="" class="indigo" on-tap="buscar">
+          Obtener datos...
+        </paper-button>
+      </template>
+
+      <template is="dom-if" if="[[!btn]]">
+        <template is="dom-if" if="[[!cargando]]">
+          <div class="card-content">
+            <vaadin-grid theme="row-stripes" aria-label="Restaurantes" items="[[data]]">
+              <vaadin-grid-column min-width="110px" flex-grow="2">
+                <template class="header">
+                  <vaadin-grid-sorter path="name">Restaurant</vaadin-grid-sorter>
+                </template>
+                <template>[[item.name]]</template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column flex-grow="1">
+                <template class="header">
+                  <vaadin-grid-sorter path="contact.site" direction="asc">Site</vaadin-grid-sorter>
+                </template>
+                <template>
+                  <paper-contact-linkedin>[[item.contact.site]]</paper-contact-linkedin>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column flex-grow="3">
+                <template class="header">
+                  <vaadin-grid-sorter path="contact.email" direction="asc">Email</vaadin-grid-sorter>
+                </template>
+                <template>
+                  [[item.contact.email]]
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column width="140px" flex-grow="0">
+                <template class="header">
+                  <vaadin-grid-sorter path="contact.phone" direction="asc">Phone</vaadin-grid-sorter>
+                </template>
+                <template>
+                  [[item.contact.phone]]
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column width="110px" flex-grow="0">
+                <template class="header">
+                  Place on Map
+                </template>
+                <template>
+                  <paper-contact-address latitude="[[item.address.location.lat]]" longitude="[[item.address.location.lng]]">Open</paper-contact-address>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column flex-grow="2">
+                <template class="header">
+                  <vaadin-grid-sorter path="address.street" direction="asc">Street</vaadin-grid-sorter>
+                </template>
+                <template>[[item.address.street]]</template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column flex-grow="1">
+                <template class="header">
+                  <vaadin-grid-sorter path="address.city" direction="asc">City</vaadin-grid-sorter>
+                </template>
+                <template>[[item.address.city]]</template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column flex-grow="1">
+                <template class="header">
+                  <vaadin-grid-sorter path="address.state" direction="asc">State</vaadin-grid-sorter>
+                </template>
+                <template>[[item.address.state]]</template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column flex-grow="0">
+                <template class="header">
+                  <vaadin-grid-sorter path="rating" direction="asc">Rating</vaadin-grid-sorter>
+                </template>
+                <template>
+                  <star-rating rate="[[item.rating]]"></star-rating>
+                </template>
+              </vaadin-grid-column>
+
+              <vaadin-grid-column flex-grow="0">
+                <template class="header">
+                  Facebook
+                </template>
+                <template>
+                  <facebook-button href="[[item.contact.site]]" layout="standard" width="250" height="30"></facebook-button>
+                </template>
+              </vaadin-grid-column>
+            </vaadin-grid>
+            
+        </div></template>
+      </template>
+      
+    </paper-card>
+    <div></div>
+  </template>
+  <script>class RestaurantePrueba extends Polymer.Element {
+  static get is() {
+    return "restaurante-prueba";
+  }
+
+  static get properties() {
+    return {
+      cargando: {
+        type: Boolean,
+        value: false
+      },
+      data: Object
+    };
+  }
+
+  ready() {
+    super.ready();
+    this.set("btn", true);
+  }
+
+  buscar() {
+    this.$.solicitarData.generateRequest();
+    this.set("btn", false);
+  }
+
+}
+
+window.customElements.define(RestaurantePrueba.is, RestaurantePrueba);</script>
+</dom-module>
