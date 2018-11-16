@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>l2t-paper-rating demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../l2t-paper-rating.html">
+
+    <link rel="import" href="../../iron-icons/social-icons.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+        .color {
+          --rating-icon-color: #ffb300;
+          --rating-ink-color: #ffb300;
+        }
+        .color[icon="favorite"] {
+          --rating-icon-color: #e57373;
+          --rating-ink-color: #e57373;
+        }
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic l2t-paper-rating demo</h3>
+      <demo-snippet><b>Default behaviour:</b><br/>
+        <template>
+          <l2t-paper-rating></l2t-paper-rating><br/>
+          <l2t-paper-rating icon="face"></l2t-paper-rating><br/>
+          <l2t-paper-rating icon="favorite"></l2t-paper-rating>
+        </template>
+      </demo-snippet>
+      <demo-snippet><b>Using other icons:</b><br/>
+     <template>
+       <link rel="import" href="../iron-icons/social-icons.html">
+
+       <l2t-paper-rating icon="social:cake"></l2t-paper-rating><br/>
+       <l2t-paper-rating icon="social:person"></l2t-paper-rating>
+     </template>
+   </demo-snippet>
+   <demo-snippet><b>Custom number of stars:</b><br/>
+     <template>
+       <l2t-paper-rating total="10"></l2t-paper-rating>
+     </template>
+   </demo-snippet>
+   <demo-snippet><b>Default rating selected:</b><br/>
+      <template>
+        <l2t-paper-rating total="10" rating="7"></l2t-paper-rating>
+      </template>
+    </demo-snippet>
+    <demo-snippet><b>Custom styles:</b><br/>
+      <template>
+        <l2t-paper-rating total="7" rating="5" class="color"></l2t-paper-rating><br/>
+        <l2t-paper-rating icon="favorite" total="7" rating="4" class="color">
+        </l2t-paper-rating>
+
+        <custom-style><!--This bit goes in the header-->
+          <style is="custom-style">
+            .color {
+              --rating-icon-color: #ffb300;
+              --rating-ink-color: #ffb300;
+            }
+            .color[icon="favorite"] {
+              --rating-icon-color: #e57373;
+              --rating-ink-color: #e57373;
+            }
+          </style>
+        </custom-style>
+      </template>
+    </demo-snippet>
+    <demo-snippet><b>Using aria-label:</b><br/>
+      <template>
+        <l2t-paper-rating rating="2" aria-label="Star rating"></l2t-paper-rating><br/>
+        <l2t-paper-rating rating="3" icon="hourglass-full" aria-label="How was your wait?"></l2t-paper-rating>
+      </template>
+    </demo-snippet>
+    <demo-snippet><b>Using aria-labelledby:</b><br/>
+      <template>
+        <p>
+          <l2t-paper-rating rating="2" aria-labelledby="star-rating-label"></l2t-paper-rating>
+          <span id="star-rating-label">Star rating</span>
+        </p>
+        <p>
+          <l2t-paper-rating rating="4" icon="thumb-up" aria-labelledby="happiness-label"></l2t-paper-rating>
+          <span id="happiness-label">Current mood</span>
+        </p>
+        <p>
+          <l2t-paper-rating rating="3" icon="weekend" aria-labelledby="relaxation-level-label"></l2t-paper-rating>
+          <span id="relaxation-level-label">Relaxation level</span>
+        </p>
+      </template>
+    </demo-snippet>
+    <demo-snippet><b>Readonly set:</b><br/>
+       <template>
+         <l2t-paper-rating readonly total="6" rating="2"></l2t-paper-rating> <br/>
+         <l2t-paper-rating readonly total="6" rating="4.5" icon="favorite"></l2t-paper-rating>
+       </template>
+     </demo-snippet>
+    </div>
+  </body>
+</html>
